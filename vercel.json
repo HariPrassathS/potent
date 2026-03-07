@@ -43,5 +43,8 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/", "destination": "/01-splash-onboarding.html" }
+  ]
 }
