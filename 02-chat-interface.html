@@ -1297,10 +1297,6 @@
             // ===== INIT =====
             function init() {
                 if (PTX.checkOnboarding()) return;
-                // Check for API key
-                if (!PTX.getApiKey()) {
-                    showApiKeyPrompt();
-                }
                 setLang(currentLang);
                 setMode(currentMode);
                 addWelcomeMessage();
@@ -1535,8 +1531,6 @@
 
             // ===== REGENERATE =====
             async function regenerateResponse(aiMsgWrap) {
-                const regenKey = PTX.getApiKey();
-                if (!regenKey) { showApiKeyPrompt(); return; }
                 // Remove the AI message from history and DOM
                 if (conversationHistory.length > 0 && conversationHistory[conversationHistory.length - 1].role === 'assistant') {
                     conversationHistory.pop();
@@ -1546,9 +1540,9 @@
                 scrollToBottom();
                 try {
                     const systemPrompt = buildSystemPrompt();
-                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    const res = await fetch('/api/chat', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + regenKey },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: systemPrompt }, ...conversationHistory], temperature: 0.95, max_tokens: 1024 })
                     });
                     if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error?.message || 'API error ' + res.status); }
@@ -1572,8 +1566,6 @@
                 const text = msgInput.value.trim();
                 const files = [...pendingFiles];
                 if (!text && files.length === 0) return;
-                const apiKey = PTX.getApiKey();
-                if (!apiKey) { showApiKeyPrompt(); return; }
 
                 // Show user message with images
                 appendMsg('user', text, files.filter(f => f.type === 'image'));
@@ -1617,9 +1609,9 @@
                     const systemPrompt = buildSystemPrompt();
                     // Use vision model when images are present
                     const model = hasImages ? 'meta-llama/llama-4-scout-17b-16e-instruct' : 'llama-3.3-70b-versatile';
-                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    const res = await fetch('/api/chat', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ model: model, messages: [{ role: 'system', content: systemPrompt }, ...conversationHistory], temperature: 0.85, max_tokens: 1024 })
                     });
                     if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error?.message || 'API error ' + res.status); }
@@ -1759,32 +1751,6 @@
 
             // ===== TOAST =====
             function showToast(msg) { PTX.showToast(msg); }
-
-            // ===== API KEY PROMPT =====
-            function showApiKeyPrompt() {
-                const overlay = document.createElement('div');
-                overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
-                const card = document.createElement('div');
-                card.style.cssText = 'background:var(--surface-raised);border:1px solid var(--glass-border);border-radius:20px;padding:28px;max-width:360px;width:100%;text-align:center';
-                card.innerHTML = '<div style="font-family:var(--font-d);font-size:22px;color:var(--gold);margin-bottom:6px">POTENTRIX</div>' +
-                    '<div style="font-size:13px;color:var(--text-2);margin-bottom:20px">Enter your Groq API key to start chatting</div>' +
-                    '<input type="password" id="apiKeyPromptInput" placeholder="gsk_..." style="width:100%;height:44px;padding:0 14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;font-size:14px;color:var(--text-1);box-sizing:border-box;margin-bottom:12px">' +
-                    '<button id="apiKeySaveBtn" style="width:100%;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--surface);font-weight:600;font-size:14px;cursor:pointer">Save & Continue</button>' +
-                    '<div style="font-size:11px;color:var(--text-3);margin-top:12px">Free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener" style="color:var(--gold)">console.groq.com/keys</a></div>';
-                overlay.appendChild(card);
-                document.body.appendChild(overlay);
-                const inp = document.getElementById('apiKeyPromptInput');
-                const btn = document.getElementById('apiKeySaveBtn');
-                inp.focus();
-                btn.addEventListener('click', () => {
-                    const key = inp.value.trim();
-                    if (!key) { showToast('Please enter an API key'); return; }
-                    PTX.setApiKey(key);
-                    overlay.remove();
-                    showToast('API key saved!');
-                });
-                inp.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
-            }
 
             // ===== MUTATION OBSERVER =====
             new MutationObserver(muts => { muts.forEach(m => { m.addedNodes.forEach(n => { if (n.nodeType === 1) { (n.querySelectorAll ? n.querySelectorAll('[class*="msg__bubble"]') : []).forEach(setupLongPress); if (n.classList?.contains('msg__bubble')) setupLongPress(n); } }); }); }).observe(msgs, { childList: true, subtree: true });

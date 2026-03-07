@@ -379,18 +379,6 @@
         <div class="content">
             <!-- LANGUAGE -->
             <div class="sec">
-                <div class="sec__title">🔑 API Key</div>
-                <div class="sec__card">
-                    <div class="api-field">
-                        <input type="password" class="api-input" id="apiKeyInput" placeholder="Enter Groq API key..." autocomplete="off">
-                        <button class="api-toggle" id="apiToggle" aria-label="Show/hide key">👁</button>
-                    </div>
-                    <div style="font-size:11px;color:var(--text-3);padding:6px 4px 0">Get your free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener" style="color:var(--gold)">console.groq.com/keys</a></div>
-                </div>
-            </div>
-
-            <!-- LANGUAGE -->
-            <div class="sec">
                 <div class="sec__title">🌍 Language</div>
                 <div class="sec__card">
                     <div class="opt-cards" id="langCards">
@@ -516,22 +504,6 @@
             const $ = id => document.getElementById(id);
             const toast = $('toast');
             function showToast(m) { PTX.showToast(m); }
-
-            // API KEY
-            const apiInput = $('apiKeyInput');
-            const apiToggle = $('apiToggle');
-            const savedKey = PTX.getApiKey();
-            if (savedKey) apiInput.value = savedKey;
-            apiInput.addEventListener('change', () => {
-                const key = apiInput.value.trim();
-                PTX.setApiKey(key);
-                showToast(key ? 'API key saved' : 'API key cleared');
-            });
-            apiToggle.addEventListener('click', () => {
-                const isPass = apiInput.type === 'password';
-                apiInput.type = isPass ? 'text' : 'password';
-                apiToggle.textContent = isPass ? '🙈' : '👁';
-            });
 
             // LANGUAGE
             const lang = PTX.get('lang', 'en');

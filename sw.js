@@ -1,7 +1,7 @@
 /* POTENTRIX Service Worker */
 'use strict';
 
-var CACHE = 'ptx-v5';
+var CACHE = 'ptx-v6';
 var ASSETS = [
   '/01-splash-onboarding.html',
   '/02-chat-interface.html',
@@ -43,7 +43,7 @@ self.addEventListener('fetch', function (e) {
   var url = new URL(e.request.url);
 
   // Skip non-GET and API calls
-  if (e.request.method !== 'GET' || url.hostname === 'api.groq.com') return;
+  if (e.request.method !== 'GET' || url.pathname.startsWith('/api/')) return;
 
   // Network-first for HTML (always get fresh), cache-first for assets
   if (e.request.headers.get('accept') && e.request.headers.get('accept').indexOf('text/html') !== -1) {

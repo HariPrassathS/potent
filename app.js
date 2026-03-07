@@ -189,10 +189,6 @@ window.PTX = (function () {
         return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    /* ===== API KEY ===== */
-    function getApiKey() { return get('groq_api_key', ''); }
-    function setApiKey(k) { set('groq_api_key', k); }
-
     /* ===== PUBLIC API ===== */
     return {
         get: get, set: set, remove: remove,
@@ -204,7 +200,6 @@ window.PTX = (function () {
         trapFocus: trapFocus, releaseFocus: releaseFocus,
         genId: genId, checkOnboarding: checkOnboarding,
         formatDate: formatDate, formatTime: formatTime,
-        MODES: MODES, LANG_MAP: LANG_MAP, LANG_PROMPTS: LANG_PROMPTS, SUGGESTIONS: SUGGESTIONS,
-        getApiKey: getApiKey, setApiKey: setApiKey
+        MODES: MODES, LANG_MAP: LANG_MAP, LANG_PROMPTS: LANG_PROMPTS, SUGGESTIONS: SUGGESTIONS
     };
 })();
