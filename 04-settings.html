@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="description" content="POTENTRIX — Customize your AI experience">
+    <meta name="theme-color" content="#1A1108">
+    <title>POTENTRIX — Settings</title>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1108'/><text x='90' y='115' font-size='100' text-anchor='middle' fill='%23E6A520'>P</text></svg>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POTENTRIX — Settings">
+    <meta property="og:description" content="Customize your AI experience">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        button,
+        input {
+            font-family: inherit;
+            border: none;
+            outline: none;
+            background: none;
+            color: inherit;
+            touch-action: manipulation
+        }
+
+        /* HEADER */
+
+        /* CONTENT */
+
+        /* SECTION */
+
+        .sec {
+            margin-bottom: 24px
+        }
+
+        .sec__title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 10px;
+            padding: 0 4px
+        }
+
+        .sec__card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden
+        }
+
+        /* ROWS */
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            min-height: 52px;
+            border-bottom: 1px solid rgba(255, 215, 122, .07)
+        }
+
+        .row:last-child {
+            border-bottom: none
+        }
+
+        .row__icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0
+        }
+
+        .row__label {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-1)
+        }
+
+        .row__desc {
+            font-size: 11px;
+            color: var(--text-3);
+            margin-top: 2px
+        }
+
+        .row__value {
+            font-size: 13px;
+            color: var(--text-3)
+        }
+
+        /* TOGGLE */
+
+        .toggle {
+            width: 48px;
+            height: 28px;
+            border-radius: 14px;
+            background: rgba(255, 248, 231, .1);
+            position: relative;
+            flex-shrink: 0;
+            transition: background .3s;
+            cursor: pointer
+        }
+
+        .toggle::after {
+            content: '';
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--text-2);
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform .3s var(--spring), background .3s
+        }
+
+        .toggle--on {
+            background: rgba(230, 165, 32, .3)
+        }
+
+        .toggle--on::after {
+            transform: translateX(20px);
+            background: var(--gold)
+        }
+
+        /* INPUT FIELD */
+
+        .api-field {
+            display: flex;
+            gap: 8px;
+            padding: 4px
+        }
+
+        .api-input {
+            flex: 1;
+            height: 44px;
+            padding: 0 14px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-1);
+            transition: border-color .15s
+        }
+
+        .api-input::placeholder {
+            color: var(--text-3)
+        }
+
+        .api-input:focus {
+            border-color: var(--glass-border-hover)
+        }
+
+        .api-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: background .15s
+        }
+
+        .api-toggle:active {
+            transform: scale(.96)
+        }
+
+        /* BUTTONS */
+
+        .btn-test {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-2);
+            transition: all .15s;
+            min-height: 44px;
+            margin-top: 4px
+        }
+
+        .btn-test:hover {
+            border-color: var(--glass-border-hover);
+            color: var(--text-1)
+        }
+
+        .btn-test:active {
+            transform: scale(.98)
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--surface);
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(230, 165, 32, .25);
+            min-height: 48px;
+            margin-top: 8px;
+            transition: transform .15s
+        }
+
+        .btn-save:active {
+            transform: scale(.97)
+        }
+
+        .status-msg {
+            font-size: 12px;
+            padding: 8px 12px;
+            margin-top: 6px;
+            border-radius: 8px;
+            text-align: center
+        }
+
+        .status-msg--ok {
+            background: rgba(0, 255, 136, .08);
+            color: var(--accent)
+        }
+
+        .status-msg--err {
+            background: rgba(248, 113, 113, .08);
+            color: #f87171
+        }
+
+        /* LANG & MODE CARDS */
+
+        .opt-cards {
+            display: flex;
+            gap: 8px;
+            padding: 8px 12px;
+            flex-wrap: wrap
+        }
+
+        .opt-card {
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            font-size: 13px;
+            color: var(--text-2);
+            transition: all .15s;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center
+        }
+
+        .opt-card:active {
+            transform: scale(.96)
+        }
+
+        .opt-card--active {
+            border-color: var(--gold);
+            background: var(--glass2);
+            color: var(--gold)
+        }
+
+        /* SLIDER */
+
+        .slider-row {
+            padding: 14px 16px
+        }
+
+        .slider-row__top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px
+        }
+
+        .slider-row__label {
+            font-size: 14px;
+            color: var(--text-1)
+        }
+
+        .slider-row__val {
+            font-size: 13px;
+            color: var(--gold)
+        }
+
+        .slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 248, 231, .1);
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 8px rgba(230, 165, 32, .3);
+            cursor: pointer
+        }
+
+        /* DANGER */
+
+        .btn-danger {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(248, 113, 113, .08);
+            border: 1px solid rgba(248, 113, 113, .2);
+            color: #f87171;
+            font-size: 14px;
+            font-weight: 500;
+            min-height: 48px;
+            transition: all .15s
+        }
+
+        .btn-danger:hover {
+            background: rgba(248, 113, 113, .12)
+        }
+
+        .btn-danger:active {
+            transform: scale(.98)
+        }
+
+        /* ABOUT */
+
+        .about {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-3);
+            font-size: 12px;
+            line-height: 1.8
+        }
+
+        .about__name {
+            font-family: var(--font-d);
+            font-size: 20px;
+            color: var(--gold-lt);
+            margin-bottom: 4px
+        }
+
+        /* NAV */
+
+    </style>
+</head>
+
+<body>
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__orb ambient__o1"></div>
+        <div class="ambient__orb ambient__o2"></div>
+        <div class="ambient__grain"></div>
+    </div>
+    <div class="app">
+        <header class="hdr">
+            <button class="hdr__back" onclick="history.back()" aria-label="Go back"><svg viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg></button>
+            <h1 class="hdr__title">Settings</h1>
+        </header>
+
+        <div class="content">
+            <!-- LANGUAGE -->
+            <div class="sec">
+                <div class="sec__title">🔑 API Key</div>
+                <div class="sec__card">
+                    <div class="api-field">
+                        <input type="password" class="api-input" id="apiKeyInput" placeholder="Enter Groq API key..." autocomplete="off">
+                        <button class="api-toggle" id="apiToggle" aria-label="Show/hide key">👁</button>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-3);padding:6px 4px 0">Get your free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener" style="color:var(--gold)">console.groq.com/keys</a></div>
+                </div>
+            </div>
+
+            <!-- LANGUAGE -->
+            <div class="sec">
+                <div class="sec__title">🌍 Language</div>
+                <div class="sec__card">
+                    <div class="opt-cards" id="langCards">
+                        <button class="opt-card" data-lang="en">🇬🇧 English</button>
+                        <button class="opt-card" data-lang="ta">🇮🇳 தமிழ்</button>
+                        <button class="opt-card" data-lang="tanglish">⚡ Tanglish</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE -->
+            <div class="sec">
+                <div class="sec__title">🎭 AI Mode</div>
+                <div class="sec__card">
+                    <div class="opt-cards" id="modeCards" style="flex-wrap:wrap">
+                        <button class="opt-card" data-mode="friendly">😊 Friendly</button>
+                        <button class="opt-card" data-mode="professional">💼 Pro</button>
+                        <button class="opt-card" data-mode="coder">💻 Coder</button>
+                        <button class="opt-card" data-mode="story">📖 Story</button>
+                        <button class="opt-card" data-mode="roast">🔥 Roast</button>
+                        <button class="opt-card" data-mode="teacher">🎓 Teacher</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPEARANCE -->
+            <div class="sec">
+                <div class="sec__title">🎨 Appearance</div>
+                <div class="sec__card">
+                    <div class="row"><span class="row__icon">💚</span>
+                        <div class="row__label">Green Accents</div>
+                        <div class="toggle toggle--on" data-key="accent_green" role="switch" aria-checked="true" aria-label="Green Accents" tabindex="0"></div>
+                    </div>
+                    <div class="row"><span class="row__icon">🎬</span>
+                        <div class="row__label">Reduced Motion</div>
+                        <div class="toggle" data-key="reduced_motion" role="switch" aria-checked="false" aria-label="Reduced Motion" tabindex="0"></div>
+                    </div>
+                    <div class="row"><span class="row__icon">🔊</span>
+                        <div class="row__label">Sound Effects</div>
+                        <div class="toggle" data-key="sounds" role="switch" aria-checked="false" aria-label="Sound Effects" tabindex="0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VOICE -->
+            <div class="sec">
+                <div class="sec__title">🎙 Voice</div>
+                <div class="sec__card">
+                    <div class="row"><span class="row__icon">📤</span>
+                        <div class="row__label">Auto-send after voice</div>
+                        <div class="toggle toggle--on" data-key="voice_auto" role="switch" aria-checked="true" aria-label="Auto-send after voice" tabindex="0"></div>
+                    </div>
+                    <div class="row"><span class="row__icon">🔈</span>
+                        <div class="row__label">Read responses aloud</div>
+                        <div class="toggle" data-key="voice_read" role="switch" aria-checked="false" aria-label="Read responses aloud" tabindex="0"></div>
+                    </div>
+                    <div class="slider-row">
+                        <div class="slider-row__top"><span class="slider-row__label">Speech Speed</span><span
+                                class="slider-row__val" id="speedVal">1.0x</span></div><input type="range"
+                            class="slider" id="speedSlider" min="50" max="200" value="100">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT -->
+            <div class="sec">
+                <div class="sec__title">💬 Chat</div>
+                <div class="sec__card">
+                    <div class="row"><span class="row__icon">⏱</span>
+                        <div class="row__label">Show Timestamps</div>
+                        <div class="toggle toggle--on" data-key="timestamps" role="switch" aria-checked="true" aria-label="Show Timestamps" tabindex="0"></div>
+                    </div>
+                    <div class="row"><span class="row__icon">😀</span>
+                        <div class="row__label">Show Message Reactions</div>
+                        <div class="toggle toggle--on" data-key="reactions" role="switch" aria-checked="true" aria-label="Show Message Reactions" tabindex="0"></div>
+                    </div>
+                </div>
+                <button class="btn-danger" id="clearAllBtn" style="margin-top:10px">🗑 Clear All Chat History</button>
+                <button class="btn-test" id="exportBtn" style="margin-top:8px">📥 Export Chat as .txt</button>
+            </div>
+
+            <!-- ABOUT -->
+            <div class="sec">
+                <div class="sec__title">ℹ️ About</div>
+                <div class="sec__card">
+                    <div class="about">
+                        <div class="about__name">POTENTRIX v1.0.0</div>
+                        Powered by Groq + LLaMA 3.3 70B<br>
+                        Infinite Intelligence · Limitless Potential
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAV -->
+        <nav class="nav">
+            <a class="nav__item" href="02-chat-interface.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg><span class="nav__label">Chat</span></a>
+            <a class="nav__item" href="06-history.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg><span class="nav__label">History</span></a>
+            <a class="nav__item" href="07-mode-selector.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                </svg><span class="nav__label">Modes</span></a>
+            <a class="nav__item nav__item--active" href="04-settings.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg><span class="nav__label">Settings</span></a>
+        </nav>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            const $ = id => document.getElementById(id);
+            const toast = $('toast');
+            function showToast(m) { PTX.showToast(m); }
+
+            // API KEY
+            const apiInput = $('apiKeyInput');
+            const apiToggle = $('apiToggle');
+            const savedKey = PTX.getApiKey();
+            if (savedKey) apiInput.value = savedKey;
+            apiInput.addEventListener('change', () => {
+                const key = apiInput.value.trim();
+                PTX.setApiKey(key);
+                showToast(key ? 'API key saved' : 'API key cleared');
+            });
+            apiToggle.addEventListener('click', () => {
+                const isPass = apiInput.type === 'password';
+                apiInput.type = isPass ? 'text' : 'password';
+                apiToggle.textContent = isPass ? '🙈' : '👁';
+            });
+
+            // LANGUAGE
+            const lang = PTX.get('lang', 'en');
+            $('langCards').querySelectorAll('.opt-card').forEach(c => {
+                c.classList.toggle('opt-card--active', c.dataset.lang === lang);
+                c.addEventListener('click', () => {
+                    $('langCards').querySelectorAll('.opt-card').forEach(x => x.classList.remove('opt-card--active'));
+                    c.classList.add('opt-card--active');
+                    PTX.set('lang', c.dataset.lang);
+                    showToast('Language updated');
+                });
+            });
+
+            // MODE
+            const mode = PTX.get('mode', 'friendly');
+            $('modeCards').querySelectorAll('.opt-card').forEach(c => {
+                c.classList.toggle('opt-card--active', c.dataset.mode === mode);
+                c.addEventListener('click', () => {
+                    $('modeCards').querySelectorAll('.opt-card').forEach(x => x.classList.remove('opt-card--active'));
+                    c.classList.add('opt-card--active');
+                    PTX.set('mode', c.dataset.mode);
+                    showToast('Mode updated');
+                });
+            });
+
+            // TOGGLES
+            document.querySelectorAll('.toggle').forEach(t => {
+                const key = t.dataset.key;
+                if (PTX.get(key, 'true') === 'false') {
+                    t.classList.remove('toggle--on');
+                    t.setAttribute('aria-checked', 'false');
+                }
+                t.addEventListener('click', () => {
+                    t.classList.toggle('toggle--on');
+                    const on = t.classList.contains('toggle--on');
+                    t.setAttribute('aria-checked', String(on));
+                    PTX.set(key, on);
+                    showToast(on ? 'Enabled' : 'Disabled');
+                });
+            });
+
+            // SLIDER
+            const speedSlider = $('speedSlider');
+            const savedSpeed = parseInt(PTX.get('speed', '100'), 10);
+            speedSlider.value = savedSpeed;
+            $('speedVal').textContent = (savedSpeed / 100).toFixed(1) + 'x';
+            speedSlider.addEventListener('input', function () {
+                $('speedVal').textContent = (this.value / 100).toFixed(1) + 'x';
+                PTX.set('speed', this.value);
+            });
+
+            // CLEAR / EXPORT
+            $('clearAllBtn').addEventListener('click', () => { PTX.clearHistory(); PTX.clearConversations(); showToast('All history cleared'); });
+            $('exportBtn').addEventListener('click', () => {
+                const hist = PTX.getHistory();
+                if (!hist.length) { showToast('No chat to export'); return; }
+                const txt = hist.map(m => 'Q: ' + m.question + '\n\nA: ' + m.answer).join('\n\n---\n\n');
+                const blob = new Blob([txt], { type: 'text/plain' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'potentrix_chat.txt'; a.click();
+                URL.revokeObjectURL(a.href);
+                showToast('Exported ✓');
+            });
+        })();
+    </script>
+</body>
+
+</html>

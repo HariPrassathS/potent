@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="theme-color" content="#1A1108">
+    <meta name="description" content="POTENTRIX — Think. Create. Achieve.">
+    <title>POTENTRIX — Welcome</title>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1108'/><text x='90' y='115' font-size='100' text-anchor='middle' fill='%23E6A520'>P</text></svg>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POTENTRIX — Welcome">
+    <meta property="og:description" content="Think. Create. Achieve. — Your Advanced AI Companion">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== CINEMATIC INTRO — CLEAN & PREMIUM ===== */
+        .cinema {
+            position: fixed; inset: 0; z-index: 999;
+            background: #000;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden
+        }
+        .cinema--out {
+            animation: cinema-out 1.4s cubic-bezier(.4,0,.2,1) forwards
+        }
+        @keyframes cinema-out {
+            0%   { opacity: 1 }
+            100% { opacity: 0; visibility: hidden }
+        }
+
+        /* Ambient glow — single subtle light behind content */
+        .cinema__glow {
+            position: absolute;
+            width: 340px; height: 340px;
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(230,165,32,.08), transparent 70%);
+            opacity: 0;
+            transition: opacity 2s ease, transform 4s ease;
+            pointer-events: none
+        }
+        .cinema__glow--on {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.3)
+        }
+        .cinema__glow--bright {
+            background: radial-gradient(circle, rgba(230,165,32,.14), rgba(0,255,136,.04) 50%, transparent 70%);
+            transform: translate(-50%, -50%) scale(1.8) !important;
+            transition: opacity 1.5s ease, transform 2s ease, background 1.5s ease !important
+        }
+
+        /* Thin horizontal rule */
+        .cinema__rule {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(230,165,32,.35), transparent);
+            z-index: 1;
+            transition: width 1.2s cubic-bezier(.4,0,.2,1)
+        }
+        .cinema__rule--on { width: 200px }
+        .cinema__rule--wide { width: 300px; background: linear-gradient(90deg, transparent, rgba(0,255,136,.25), transparent) }
+        .cinema__rule--off {
+            opacity: 0;
+            transition: opacity .6s ease, width 1.2s cubic-bezier(.4,0,.2,1)
+        }
+
+        /* ── Qunatic Labs ── */
+        .cinema__studio {
+            position: relative; z-index: 2;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 1s ease, transform 1s cubic-bezier(.4,0,.2,1)
+        }
+        .cinema__studio--in {
+            opacity: 1; transform: translateY(0)
+        }
+        .cinema__studio--out {
+            opacity: 0; transform: translateY(-6px);
+            transition: opacity .8s ease, transform .8s ease
+        }
+
+        .cinema__studio-icon {
+            width: 72px; height: 72px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #0c0c18, #141428);
+            border: 1px solid rgba(230,165,32,.15);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px; font-weight: 600;
+            font-family: var(--font-d);
+            color: var(--gold);
+            opacity: .9
+        }
+
+        .cinema__studio-name {
+            font-family: var(--font-d);
+            font-size: 28px; font-weight: 300;
+            color: rgba(255,255,255,.9);
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            margin-bottom: 10px
+        }
+
+        .cinema__studio-tag {
+            font-size: 10px;
+            color: rgba(255,255,255,.2);
+            letter-spacing: 5px;
+            text-transform: uppercase
+        }
+
+        /* ── POTENTRIX ── */
+        .cinema__product {
+            position: absolute; z-index: 2;
+            text-align: center;
+            opacity: 0;
+            transform: scale(.95);
+            transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.4,0,.2,1)
+        }
+        .cinema__product--in {
+            opacity: 1; transform: scale(1)
+        }
+
+        .cinema__ptx-logo {
+            width: 96px; height: 96px;
+            border-radius: 24px;
+            background: conic-gradient(from 0deg, var(--gold), var(--accent), var(--gold-lt), var(--gold));
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 60px rgba(0,255,136,.12), 0 0 120px rgba(230,165,32,.08)
+        }
+        .cinema__ptx-letter {
+            font-family: var(--font-d);
+            font-size: 48px; font-weight: 600;
+            color: var(--surface)
+        }
+        .cinema__ptx-name {
+            font-family: var(--font-d);
+            font-size: 36px; font-weight: 300;
+            color: var(--gold-lt);
+            letter-spacing: 8px;
+            margin-bottom: 10px
+        }
+        .cinema__ptx-sub {
+            font-size: 11px;
+            color: rgba(0,255,136,.5);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity .8s ease .3s, transform .8s ease .3s
+        }
+        .cinema__ptx-sub--in {
+            opacity: 1; transform: translateY(0)
+        }
+
+        .app { overflow: hidden; opacity: 0; transition: opacity .6s ease }
+        /* SKIP */
+
+        .skip {
+            position: absolute;
+            top: calc(var(--safe-t) + 12px);
+            right: 16px;
+            z-index: 10;
+            font-size: 14px;
+            color: var(--text-3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            transition: color .15s
+        }
+
+        .skip:hover {
+            color: var(--text-1)
+        }
+
+        /* SLIDES */
+
+        .slides {
+            flex: 1;
+            display: flex;
+            transition: transform .5s var(--spring);
+            will-change: transform
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 32px;
+            text-align: center
+        }
+
+        /* SLIDE 1 — WELCOME */
+
+        .hex-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            background: conic-gradient(from 0deg, var(--gold), var(--accent), var(--gold-lt), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            animation: hex-spin 8s linear infinite, hex-float 3s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0, 255, 136, .15), 0 0 80px rgba(230, 165, 32, .1)
+        }
+
+        .hex-logo__letter {
+            font-family: var(--font-d);
+            font-size: 56px;
+            font-weight: 600;
+            color: var(--surface);
+            text-shadow: 0 0 8px rgba(0, 0, 0, .3)
+        }
+
+        .welcome-title {
+            font-family: var(--font-d);
+            font-size: 36px;
+            font-weight: 300;
+            color: var(--gold-lt);
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fade-up .6s var(--spring) .3s forwards
+        }
+
+        .welcome-sub {
+            font-size: 15px;
+            color: var(--text-2);
+            line-height: 1.6;
+            max-width: 300px;
+            opacity: 0;
+            animation: fade-up .6s var(--spring) .5s forwards
+        }
+
+        .welcome-tag {
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 24px;
+            opacity: 0;
+            animation: fade-up .6s var(--spring) .7s forwards
+        }
+
+        /* SLIDE 2 — LANGUAGE */
+
+        .slide-title {
+            font-family: var(--font-d);
+            font-size: 28px;
+            font-weight: 300;
+            color: var(--gold-lt);
+            margin-bottom: 8px
+        }
+
+        .slide-desc {
+            font-size: 14px;
+            color: var(--text-3);
+            margin-bottom: 32px
+        }
+
+        .lang-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 320px
+        }
+
+        .lang-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: 16px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: all .2s var(--spring);
+            min-height: 64px;
+            text-align: left;
+            width: 100%
+        }
+
+        .lang-card:active {
+            transform: scale(.97)
+        }
+
+        .lang-card--selected {
+            border-color: var(--gold);
+            background: var(--glass2);
+            box-shadow: 0 0 20px rgba(230, 165, 32, .1)
+        }
+
+        .lang-card__flag {
+            font-size: 28px
+        }
+
+        .lang-card__info {
+            flex: 1
+        }
+
+        .lang-card__name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-1)
+        }
+
+        .lang-card__desc {
+            font-size: 12px;
+            color: var(--text-3);
+            margin-top: 2px
+        }
+
+        .lang-card__check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all .2s
+        }
+
+        .lang-card--selected .lang-card__check {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--surface)
+        }
+
+        /* SLIDE 3 — MODE */
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            max-width: 320px
+        }
+
+        .mode-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 16px 12px;
+            border-radius: 16px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: all .2s var(--spring);
+            min-height: 80px;
+            width: 100%
+        }
+
+        .mode-card:active {
+            transform: scale(.96)
+        }
+
+        .mode-card--selected {
+            background: var(--glass2);
+            box-shadow: 0 0 16px rgba(0, 0, 0, .3)
+        }
+
+        .mode-card__icon {
+            font-size: 28px
+        }
+
+        .mode-card__name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-1)
+        }
+
+        .mode-card__desc {
+            font-size: 10px;
+            color: var(--text-3)
+        }
+
+        /* BOTTOM */
+
+        .bottom {
+            padding: 20px 32px calc(var(--safe-b) + 24px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--glass-border);
+            transition: all .3s var(--spring)
+        }
+
+        .dot--active {
+            background: var(--gold);
+            width: 28px;
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(230, 165, 32, .3)
+        }
+
+        .btn-primary {
+            width: 100%;
+            max-width: 320px;
+            padding: 16px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--surface);
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(230, 165, 32, .3);
+            transition: transform .15s;
+            min-height: 52px
+        }
+
+        .btn-primary:active {
+            transform: scale(.97)
+        }
+
+        .btn-primary:focus-visible {
+            outline: 2px solid var(--ivory);
+            outline-offset: 3px
+        }
+
+        .btn-primary--accent {
+            background: linear-gradient(135deg, var(--accent-dk), #006B3A);
+            color: var(--accent);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, .15)
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- CINEMATIC INTRO -->
+    <div class="cinema" id="cinema">
+        <div class="cinema__glow" id="glow"></div>
+        <div class="cinema__rule" id="rule"></div>
+
+        <!-- Qunatic Labs -->
+        <div class="cinema__studio" id="studioLogo">
+            <div class="cinema__studio-icon">Q</div>
+            <div class="cinema__studio-name">Qunatic Labs</div>
+            <div class="cinema__studio-tag">Innovation · Redefined</div>
+        </div>
+
+        <!-- POTENTRIX -->
+        <div class="cinema__product" id="ptxLogo">
+            <div class="cinema__ptx-logo"><span class="cinema__ptx-letter">P</span></div>
+            <div class="cinema__ptx-name">POTENTRIX</div>
+            <div class="cinema__ptx-sub" id="ptxSub">Think · Create · Achieve</div>
+        </div>
+    </div>
+
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__orb ambient__o1"></div>
+        <div class="ambient__orb ambient__o2"></div>
+        <div class="ambient__grain"></div>
+    </div>
+    <div class="app">
+        <button class="skip" id="skipBtn" aria-label="Skip onboarding">Skip →</button>
+
+        <div class="slides" id="slides">
+            <!-- SLIDE 1: WELCOME -->
+            <div class="slide" id="slide0">
+                <div class="hex-logo"><span class="hex-logo__letter">P</span></div>
+                <div class="welcome-title">POTENTRIX</div>
+                <div class="welcome-sub">Your advanced AI companion — intelligent, versatile, and always ready to help.</div>
+                <div class="welcome-tag">Infinite Intelligence · Limitless Potential</div>
+            </div>
+            <!-- SLIDE 2: LANGUAGE -->
+            <div class="slide" id="slide1">
+                <div class="slide-title">Choose Your Language</div>
+                <div class="slide-desc">How should POTENTRIX speak to you?</div>
+                <div class="lang-cards" id="langCards">
+                    <button class="lang-card lang-card--selected" data-lang="en"><span
+                            class="lang-card__flag">🇬🇧</span>
+                        <div class="lang-card__info">
+                            <div class="lang-card__name">English</div>
+                            <div class="lang-card__desc">Clear, precise communication</div>
+                        </div>
+                        <div class="lang-card__check">✓</div>
+                    </button>
+                    <button class="lang-card" data-lang="ta"><span class="lang-card__flag">🇮🇳</span>
+                        <div class="lang-card__info">
+                            <div class="lang-card__name">தமிழ் (Tamil)</div>
+                            <div class="lang-card__desc">இயல்பான உரையாடல்</div>
+                        </div>
+                        <div class="lang-card__check"></div>
+                    </button>
+                    <button class="lang-card" data-lang="tanglish"><span class="lang-card__flag">⚡</span>
+                        <div class="lang-card__info">
+                            <div class="lang-card__name">Tanglish</div>
+                            <div class="lang-card__desc">Tamil + English mix, bro!</div>
+                        </div>
+                        <div class="lang-card__check"></div>
+                    </button>
+                </div>
+            </div>
+            <!-- SLIDE 3: MODE -->
+            <div class="slide" id="slide2">
+                <div class="slide-title">How Should I Act?</div>
+                <div class="slide-desc">Choose your POTENTRIX personality</div>
+                <div class="mode-grid" id="modeGrid">
+                    <button class="mode-card mode-card--selected" data-mode="friendly"
+                        style="border-color:#E6A520"><span class="mode-card__icon">😊</span><span
+                            class="mode-card__name">Friendly</span><span class="mode-card__desc">Best friend
+                            vibes</span></button>
+                    <button class="mode-card" data-mode="professional" data-color="#4A9EFF"><span
+                            class="mode-card__icon">💼</span><span class="mode-card__name">Professional</span><span
+                            class="mode-card__desc">Sharp & precise</span></button>
+                    <button class="mode-card" data-mode="coder" data-color="#00FF88"><span
+                            class="mode-card__icon">💻</span><span class="mode-card__name">Coder</span><span
+                            class="mode-card__desc">Senior dev partner</span></button>
+                    <button class="mode-card" data-mode="story" data-color="#FF6B9D"><span
+                            class="mode-card__icon">📖</span><span class="mode-card__name">Story Teller</span><span
+                            class="mode-card__desc">Epic tales master</span></button>
+                    <button class="mode-card" data-mode="roast" data-color="#FF4444"><span
+                            class="mode-card__icon">🔥</span><span class="mode-card__name">Roast</span><span
+                            class="mode-card__desc">Savage but loveable</span></button>
+                    <button class="mode-card" data-mode="teacher" data-color="#A78BFA"><span
+                            class="mode-card__icon">🎓</span><span class="mode-card__name">Teacher</span><span
+                            class="mode-card__desc">World's best explainer</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="dots" id="dots">
+                <div class="dot dot--active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <button class="btn-primary" id="nextBtn">Continue →</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            // ===== CINEMATIC INTRO =====
+            var cinema  = document.getElementById('cinema');
+            var studio  = document.getElementById('studioLogo');
+            var ptx     = document.getElementById('ptxLogo');
+            var glow    = document.getElementById('glow');
+            var rule    = document.getElementById('rule');
+            var ptxSub  = document.getElementById('ptxSub');
+            var appEl   = document.querySelector('.app');
+
+            function t(fn, ms) { setTimeout(fn, ms); }
+
+            /* ─── Timeline (~6s, slow & confident) ─── */
+
+            // 0.4s  — ambient glow fades on
+            t(function () { glow.classList.add('cinema__glow--on'); }, 400);
+
+            // 0.8s  — thin gold line draws
+            t(function () { rule.classList.add('cinema__rule--on'); }, 800);
+
+            // 1.0s  — Qunatic Labs fades up
+            t(function () { studio.classList.add('cinema__studio--in'); }, 1000);
+
+            // 3.0s  — Qunatic Labs fades out, line fades
+            t(function () {
+                studio.classList.remove('cinema__studio--in');
+                studio.classList.add('cinema__studio--out');
+                rule.classList.add('cinema__rule--off');
+            }, 3000);
+
+            // 3.8s  — glow intensifies, new line, POTENTRIX appears
+            t(function () {
+                glow.classList.add('cinema__glow--bright');
+                rule.classList.remove('cinema__rule--on', 'cinema__rule--off');
+                void rule.offsetWidth;
+                rule.classList.add('cinema__rule--wide');
+                ptx.classList.add('cinema__product--in');
+            }, 3800);
+
+            // 4.2s  — subtitle fades in
+            t(function () { ptxSub.classList.add('cinema__ptx-sub--in'); }, 4200);
+
+            // 5.8s  — cinema fades to black → app reveals
+            t(function () {
+                cinema.classList.add('cinema--out');
+                appEl.style.opacity = '1';
+            }, 5800);
+
+            // 7.2s  — remove cinema from DOM
+            t(function () { cinema.remove(); }, 7200);
+
+            // ===== ONBOARDING =====
+            let step = 0; const total = 3;
+            let selectedLang = 'en', selectedMode = 'friendly';
+            const slides = document.getElementById('slides'), dots = document.getElementById('dots'), nextBtn = document.getElementById('nextBtn');
+            const modeColors = { friendly: '#E6A520', professional: '#4A9EFF', coder: '#00FF88', story: '#FF6B9D', roast: '#FF4444', teacher: '#A78BFA' };
+
+            function goTo(s) {
+                step = Math.max(0, Math.min(total - 1, s));
+                slides.style.transform = 'translateX(-' + step * 100 + '%)';
+                dots.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('dot--active', i === step));
+                nextBtn.textContent = step === total - 1 ? 'Activate POTENTRIX →' : 'Continue →';
+                if (step === total - 1) { nextBtn.classList.add('btn-primary--accent'); } else { nextBtn.classList.remove('btn-primary--accent'); }
+            }
+            nextBtn.addEventListener('click', () => {
+                if (step < total - 1) { goTo(step + 1); }
+                else { PTX.set('lang', selectedLang); PTX.set('mode', selectedMode); PTX.set('onboarded', 'true'); window.location.href = '02-chat-interface.html'; }
+            });
+            document.getElementById('skipBtn').addEventListener('click', () => { PTX.set('onboarded', 'true'); window.location.href = '02-chat-interface.html'; });
+
+            // Language selection
+            document.getElementById('langCards').addEventListener('click', e => {
+                const card = e.target.closest('.lang-card'); if (!card) return;
+                selectedLang = card.dataset.lang;
+                document.querySelectorAll('.lang-card').forEach(c => { c.classList.remove('lang-card--selected'); c.querySelector('.lang-card__check').textContent = ''; });
+                card.classList.add('lang-card--selected'); card.querySelector('.lang-card__check').textContent = '✓';
+            });
+
+            // Mode selection
+            document.getElementById('modeGrid').addEventListener('click', e => {
+                const card = e.target.closest('.mode-card'); if (!card) return;
+                selectedMode = card.dataset.mode;
+                const color = card.dataset.color || modeColors[selectedMode] || '#E6A520';
+                document.querySelectorAll('.mode-card').forEach(c => { c.classList.remove('mode-card--selected'); c.style.borderColor = ''; });
+                card.classList.add('mode-card--selected'); card.style.borderColor = color;
+            });
+
+            // Swipe
+            let startX = 0;
+            slides.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+            slides.addEventListener('touchend', e => { const diff = startX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) { diff > 0 ? goTo(step + 1) : goTo(step - 1); } }, { passive: true });
+
+            goTo(0);
+        })();
+    </script>
+</body>
+
+</html>

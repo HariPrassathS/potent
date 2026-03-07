@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="description" content="POTENTRIX — Your conversation history">
+    <meta name="theme-color" content="#1A1108">
+    <title>POTENTRIX — History</title>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1108'/><text x='90' y='115' font-size='100' text-anchor='middle' fill='%23E6A520'>P</text></svg>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POTENTRIX — History">
+    <meta property="og:description" content="Your conversation history">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        button,
+        input {
+            font-family: inherit;
+            border: none;
+            outline: none;
+            background: none;
+            color: inherit
+        }
+
+        .hdr__top {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .hdr__clear {
+            font-size: 13px;
+            font-weight: 500;
+            color: #f87171;
+            padding: 8px 14px;
+            border-radius: 20px;
+            min-height: 44px;
+            display: flex;
+            align-items: center
+        }
+
+        .hdr__clear:active {
+            transform: scale(.96)
+        }
+
+        .search {
+            position: relative
+        }
+
+        .search__input {
+            width: 100%;
+            height: 44px;
+            padding: 0 16px 0 42px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-1);
+            font-size: 14px
+        }
+
+        .search__input::placeholder {
+            color: var(--text-3)
+        }
+
+        .search__input:focus {
+            border-color: var(--glass-border-hover)
+        }
+
+        .search__icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-3);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            pointer-events: none
+        }
+
+        .filters {
+            display: flex;
+            gap: 6px;
+            padding: 10px 16px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            flex-shrink: 0
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none
+        }
+
+        .filter {
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-3);
+            white-space: nowrap;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            transition: all .15s
+        }
+
+        .filter:active {
+            transform: scale(.96)
+        }
+
+        .filter--active {
+            background: rgba(230, 165, 32, .15);
+            border-color: var(--gold);
+            color: var(--gold)
+        }
+
+        .list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 16px calc(var(--safe-b) + 100px);
+            overscroll-behavior: contain;
+            scrollbar-width: none
+        }
+
+        .list::-webkit-scrollbar {
+            display: none
+        }
+
+        /* EMPTY STATE */
+
+        .empty {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            text-align: center;
+            flex: 1
+        }
+
+        .empty--vis {
+            display: flex
+        }
+
+        .empty__hex {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 24px;
+            animation: hex-float 3s ease-in-out infinite
+        }
+
+        .empty__title {
+            font-family: var(--font-d);
+            font-size: 24px;
+            color: var(--gold-lt);
+            margin-bottom: 8px
+        }
+
+        .empty__desc {
+            font-size: 14px;
+            color: var(--text-3);
+            margin-bottom: 24px
+        }
+
+        .empty__btn {
+            padding: 14px 28px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--surface);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(230, 165, 32, .25);
+            min-height: 48px
+        }
+
+        .empty__btn:active {
+            transform: scale(.97)
+        }
+
+        .date-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-3);
+            padding: 12px 4px 8px
+        }
+
+        .convo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            margin-bottom: 8px;
+            transition: all .15s;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: card-in .4s var(--spring) forwards
+        }
+
+        .convo:nth-child(2) {
+            animation-delay: .05s
+        }
+
+        .convo:nth-child(3) {
+            animation-delay: .1s
+        }
+
+        .convo:nth-child(4) {
+            animation-delay: .15s
+        }
+
+        .convo:nth-child(5) {
+            animation-delay: .2s
+        }
+
+        .convo:active {
+            transform: scale(.98)
+        }
+
+        .convo:hover {
+            border-color: var(--glass-border-hover)
+        }
+
+        .convo__icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0
+        }
+
+        .convo__body {
+            flex: 1;
+            min-width: 0
+        }
+
+        .convo__title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .convo__preview {
+            font-size: 12px;
+            color: var(--text-3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px
+        }
+
+        .convo__meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            flex-shrink: 0
+        }
+
+        .convo__time {
+            font-size: 10px;
+            color: var(--text-3)
+        }
+
+        .convo__flag {
+            font-size: 12px
+        }
+
+        .convo__count {
+            font-size: 9px;
+            font-weight: 600;
+            background: var(--gold);
+            color: var(--surface);
+            border-radius: 10px;
+            padding: 1px 6px
+        }
+
+        /* NAV */
+
+    </style>
+</head>
+
+<body>
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__orb ambient__o1"></div>
+        <div class="ambient__orb ambient__o2"></div>
+        <div class="ambient__grain"></div>
+    </div>
+    <div class="app">
+        <header class="hdr">
+            <div class="hdr__top">
+                <button class="hdr__back" onclick="history.back()" aria-label="Go back"><svg viewBox="0 0 24 24">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg></button>
+                <h1 class="hdr__title">Chat History</h1>
+                <button class="hdr__clear" id="clearAll">Clear All</button>
+            </div>
+            <div class="search"><svg class="search__icon" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg><input type="search" class="search__input" id="searchInput" placeholder="Search conversations..."
+                    aria-label="Search"></div>
+        </header>
+        <div class="filters" id="filters">
+            <button class="filter filter--active" data-filter="all">All</button>
+            <button class="filter" data-filter="friendly">😊 Friendly</button>
+            <button class="filter" data-filter="professional">💼 Pro</button>
+            <button class="filter" data-filter="coder">💻 Coder</button>
+            <button class="filter" data-filter="story">📖 Story</button>
+            <button class="filter" data-filter="roast">🔥 Roast</button>
+            <button class="filter" data-filter="teacher">🎓 Teacher</button>
+        </div>
+        <div class="list" id="list"></div>
+        <div class="empty" id="empty">
+            <div class="empty__hex">�</div>
+            <div class="empty__title">No Conversations Yet</div>
+            <div class="empty__desc">Start your first conversation with POTENTRIX</div>
+            <button class="empty__btn" onclick="location.href='02-chat-interface.html'">Activate POTENTRIX →</button>
+        </div>
+
+        <nav class="nav">
+            <a class="nav__item" href="02-chat-interface.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg><span class="nav__label">Chat</span></a>
+            <a class="nav__item nav__item--active" href="06-history.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg><span class="nav__label">History</span></a>
+            <a class="nav__item" href="07-mode-selector.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                </svg><span class="nav__label">Modes</span></a>
+            <a class="nav__item" href="04-settings.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg><span class="nav__label">Settings</span></a>
+        </nav>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            const ICONS = { friendly: { icon: '😊', bg: 'rgba(230,165,32,.12)' }, professional: { icon: '💼', bg: 'rgba(74,158,255,.12)' }, coder: { icon: '💻', bg: 'rgba(0,255,136,.12)' }, story: { icon: '📖', bg: 'rgba(255,107,157,.12)' }, roast: { icon: '🔥', bg: 'rgba(255,68,68,.12)' }, teacher: { icon: '🎓', bg: 'rgba(167,139,250,.12)' } };
+            const LANG_FLAGS = { en: '🇬🇧', ta: '🇮🇳', tanglish: '⚡' };
+            function loadData() {
+                return PTX.getConversations().map(c => ({
+                    id: c.id,
+                    mode: c.mode || 'friendly',
+                    lang: c.lang || 'en',
+                    title: c.title || 'Untitled',
+                    preview: (c.messages && c.messages.length > 1 ? c.messages[c.messages.length - 1].content : '').slice(0, 80),
+                    time: PTX.formatTime(c.updatedAt || c.createdAt),
+                    date: PTX.formatDate(c.updatedAt || c.createdAt),
+                    count: c.messages ? c.messages.length : 0
+                }));
+            }
+            let DATA = loadData();
+            const list = document.getElementById('list'), empty = document.getElementById('empty'), toast = document.getElementById('toast');
+
+            function render(data) {
+                list.innerHTML = '';
+                if (!data.length) { list.style.display = 'none'; empty.classList.add('empty--vis'); return; }
+                list.style.display = 'block'; empty.classList.remove('empty--vis');
+                let lastDate = '';
+                data.forEach(c => {
+                    if (c.date !== lastDate) { lastDate = c.date; const dl = document.createElement('div'); dl.className = 'date-label'; dl.textContent = c.date; list.appendChild(dl); }
+                    const ic = ICONS[c.mode] || ICONS.friendly;
+                    const el = document.createElement('button'); el.className = 'convo'; el.dataset.mode = c.mode;
+                    el.innerHTML = `<div class="convo__icon" style="background:${ic.bg}">${ic.icon}</div><div class="convo__body"><div class="convo__title">${c.title}</div><div class="convo__preview">${c.preview}</div></div><div class="convo__meta"><span class="convo__time">${c.time}</span><span class="convo__flag">${LANG_FLAGS[c.lang] || '🇬🇧'}</span><span class="convo__count">${c.count}</span></div>`;
+                    el.addEventListener('click', () => { PTX.showToast('Opening: ' + PTX.escHtml(c.title)); });
+                    list.appendChild(el);
+                });
+            }
+
+            // Filters
+            document.getElementById('filters').addEventListener('click', e => {
+                const f = e.target.closest('.filter'); if (!f) return;
+                document.querySelectorAll('.filter').forEach(x => x.classList.remove('filter--active'));
+                f.classList.add('filter--active');
+                const v = f.dataset.filter;
+                render(v === 'all' ? DATA : DATA.filter(c => c.mode === v));
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', function () {
+                const q = this.value.toLowerCase();
+                render(DATA.filter(c => c.title.toLowerCase().includes(q) || c.preview.toLowerCase().includes(q)));
+            });
+
+            // Clear
+            document.getElementById('clearAll').addEventListener('click', () => { PTX.clearConversations(); DATA = []; render([]); PTX.showToast('History cleared'); });
+
+            render(DATA);
+        })();
+    </script>
+</body>
+
+</html>

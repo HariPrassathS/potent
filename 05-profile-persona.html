@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="description" content="POTENTRIX — Choose your AI personality">
+    <meta name="theme-color" content="#1A1108">
+    <title>POTENTRIX — Personas</title>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1108'/><text x='90' y='115' font-size='100' text-anchor='middle' fill='%23E6A520'>P</text></svg>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POTENTRIX — Personas">
+    <meta property="og:description" content="Choose your AI personality">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .persona {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 14px;
+            transition: all .3s var(--spring);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: card-in .4s var(--spring) forwards
+        }
+
+        .persona:nth-child(2) {
+            animation-delay: .1s
+        }
+
+        .persona:nth-child(3) {
+            animation-delay: .15s
+        }
+
+        .persona:nth-child(4) {
+            animation-delay: .2s
+        }
+
+        .persona:nth-child(5) {
+            animation-delay: .25s
+        }
+
+        .persona:nth-child(6) {
+            animation-delay: .3s
+        }
+
+        .persona:nth-child(7) {
+            animation-delay: .35s
+        }
+
+        .persona:active {
+            transform: scale(.98)
+        }
+
+        .persona--active {
+            border-color: var(--gold);
+            box-shadow: 0 0 24px rgba(230, 165, 32, .1)
+        }
+
+        .persona__top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px
+        }
+
+        .persona__icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0
+        }
+
+        .persona__info {
+            flex: 1
+        }
+
+        .persona__name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-1);
+            margin-bottom: 2px
+        }
+
+        .persona__desc {
+            font-size: 12px;
+            color: var(--text-3)
+        }
+
+        .persona__badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--surface);
+            flex-shrink: 0;
+            display: none
+        }
+
+        .persona--active .persona__badge {
+            display: block
+        }
+
+        .persona__preview {
+            background: rgba(0, 0, 0, .2);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-2);
+            font-style: italic
+        }
+
+        .persona__activate {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-2);
+            margin-top: 12px;
+            min-height: 44px;
+            transition: all .15s
+        }
+
+        .persona__activate:active {
+            transform: scale(.98)
+        }
+
+        .persona--active .persona__activate {
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--surface);
+            border: none;
+            box-shadow: 0 4px 16px rgba(230, 165, 32, .25)
+        }
+
+        /* NAV */
+
+    </style>
+</head>
+
+<body>
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__orb ambient__o1"></div>
+        <div class="ambient__orb ambient__o2"></div>
+        <div class="ambient__grain"></div>
+    </div>
+    <div class="app">
+        <header class="hdr">
+            <button class="hdr__back" onclick="history.back()" aria-label="Go back"><svg viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg></button>
+            <h1 class="hdr__title">Choose Your Persona</h1>
+        </header>
+        <div class="content" id="personas">
+            <div class="section-title">POTENTRIX Personalities</div>
+        </div>
+        <nav class="nav">
+            <a class="nav__item" href="02-chat-interface.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg><span class="nav__label">Chat</span></a>
+            <a class="nav__item" href="06-history.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg><span class="nav__label">History</span></a>
+            <a class="nav__item" href="07-mode-selector.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                </svg><span class="nav__label">Modes</span></a>
+            <a class="nav__item" href="04-settings.html"><svg class="nav__icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg><span class="nav__label">Settings</span></a>
+        </nav>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            const PERSONAS = [
+                { key: 'friendly', icon: '😊', name: 'POTENTRIX Buddy', desc: 'Your fun, warm best friend', color: '#E6A520', bg: 'rgba(230,165,32,.12)', preview: '"Hey! 😊 That\'s actually a super cool idea. Let me help you figure it out — we\'re gonna crush this together!"' },
+                { key: 'professional', icon: '💼', name: 'POTENTRIX Executive', desc: 'Sharp, precise, authoritative', color: '#4A9EFF', bg: 'rgba(74,158,255,.12)', preview: '"Based on current data, I recommend a three-phase approach. Here\'s the executive summary..."' },
+                { key: 'coder', icon: '💻', name: 'POTENTRIX Dev', desc: 'Your senior coding partner', color: '#00FF88', bg: 'rgba(0,255,136,.12)', preview: '"Here\'s a clean solution using React hooks with proper error boundaries and TypeScript..."' },
+                { key: 'story', icon: '📖', name: 'POTENTRIX Narrator', desc: 'Master of epic tales', color: '#FF6B9D', bg: 'rgba(255,107,157,.12)', preview: '"The rain fell like whispered secrets upon the ancient city, as Elena discovered the letter that would change everything..."' },
+                { key: 'roast', icon: '🔥', name: 'POTENTRIX Savage', desc: 'Hilarious, witty, savage', color: '#FF4444', bg: 'rgba(255,68,68,.12)', preview: '"Bro, your code has more bugs than a rainforest 🐛 But seriously, here\'s how to fix it..."' },
+                { key: 'teacher', icon: '🎓', name: 'POTENTRIX Guru', desc: 'World\'s best explainer', color: '#A78BFA', bg: 'rgba(167,139,250,.12)', preview: '"Think of quantum physics like a magical coin — it\'s both heads AND tails until you look at it! Let me explain..."' }
+            ];
+            const currentMode = PTX.get('mode', 'friendly');
+            const container = document.getElementById('personas');
+            const toast = document.getElementById('toast');
+
+            PERSONAS.forEach(p => {
+                const active = p.key === currentMode;
+                const el = document.createElement('div');
+                el.className = 'persona' + (active ? ' persona--active' : '');
+                el.innerHTML = `
+    <div class="persona__top">
+      <div class="persona__icon" style="background:${p.bg}">${p.icon}</div>
+      <div class="persona__info"><div class="persona__name">${p.name}</div><div class="persona__desc">${p.desc}</div></div>
+      <div class="persona__badge" style="background:${p.color}">Active</div>
+    </div>
+    <div class="persona__preview">${p.preview}</div>
+    <button class="persona__activate">${active ? '✦ Currently Active' : 'Activate This Mode'}</button>`;
+                el.querySelector('.persona__activate').addEventListener('click', () => {
+                    PTX.set('mode', p.key);
+                    document.querySelectorAll('.persona').forEach(x => { x.classList.remove('persona--active'); x.querySelector('.persona__activate').textContent = 'Activate This Mode'; x.querySelector('.persona__badge').style.display = 'none'; });
+                    el.classList.add('persona--active'); el.querySelector('.persona__activate').textContent = '✦ Currently Active'; el.querySelector('.persona__badge').style.display = 'block';
+                    PTX.showToast(p.icon + ' ' + p.name + ' activated!');
+                });
+                container.appendChild(el);
+            });
+        })();
+    </script>
+</body>
+
+</html>

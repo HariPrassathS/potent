@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="description" content="POTENTRIX — Application states">
+    <meta name="theme-color" content="#1A1108">
+    <title>POTENTRIX — States</title>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1108'/><text x='90' y='115' font-size='100' text-anchor='middle' fill='%23E6A520'>P</text></svg>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POTENTRIX — States">
+    <meta property="og:description" content="Application states">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* TABS */
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 10px 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            flex-shrink: 0
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none
+        }
+
+        .tab {
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-3);
+            white-space: nowrap;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all .15s;
+            flex-shrink: 0
+        }
+
+        .tab:active {
+            transform: scale(.96)
+        }
+
+        .tab--active {
+            background: rgba(230, 165, 32, .15);
+            border-color: var(--gold);
+            color: var(--gold)
+        }
+
+        /* STATE VIEWS */
+
+        .state {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 28px;
+            text-align: center
+        }
+
+        .state--vis {
+            display: flex
+        }
+
+        /* HEX */
+
+        .state-hex {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            margin-bottom: 28px;
+            position: relative
+        }
+
+        .state-hex--spin {
+            animation: hex-float 3s ease-in-out infinite
+        }
+
+        .state-hex--pulse::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 28px;
+            border: 1px solid;
+            animation: glow-pulse 2s ease-in-out infinite
+        }
+
+        @keyframes glow-pulse {
+
+            0%,
+            100% {
+                opacity: .3;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .8;
+                transform: scale(1.05)
+            }
+        }
+
+        .state-hex--shake {
+            animation: hex-shake .5s ease 0s 3, hex-float 3s ease-in-out infinite .5s
+        }
+
+        @keyframes hex-shake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            25% {
+                transform: translateX(-6px)
+            }
+
+            75% {
+                transform: translateX(6px)
+            }
+        }
+
+        .state-title {
+            font-family: var(--font-d);
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 10px
+        }
+
+        .state-desc {
+            font-size: 14px;
+            color: var(--text-3);
+            line-height: 1.6;
+            max-width: 300px;
+            margin-bottom: 28px
+        }
+
+        .state-btn {
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
+            min-height: 52px;
+            transition: transform .15s
+        }
+
+        .state-btn:active {
+            transform: scale(.97)
+        }
+
+        .state-btn--gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--surface)
+        }
+
+        .state-btn--accent {
+            background: linear-gradient(135deg, var(--accent-dk), #006B3A);
+            color: var(--accent)
+        }
+
+        .state-btn--red {
+            background: rgba(248, 113, 113, .12);
+            border: 1px solid rgba(248, 113, 113, .3);
+            color: #f87171
+        }
+
+        .state-btn--outline {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-2);
+            margin-top: 12px
+        }
+
+        .state-link {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--gold);
+            text-decoration: underline
+        }
+
+        /* SKELETON */
+
+        .skeleton-list {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch
+        }
+
+        .skel-msg {
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            animation: skel-in .4s var(--spring) forwards
+        }
+
+        .skel-msg:nth-child(2) {
+            animation-delay: .1s
+        }
+
+        .skel-msg:nth-child(3) {
+            animation-delay: .2s
+        }
+
+        .skel-msg:nth-child(4) {
+            animation-delay: .3s
+        }
+
+        @keyframes skel-in {
+            to {
+                opacity: 1
+            }
+        }
+
+        .skel-msg--right {
+            flex-direction: row-reverse
+        }
+
+        .skel-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            flex-shrink: 0
+        }
+
+        .skel-bubble {
+            flex: 1;
+            border-radius: 16px;
+            height: 56px
+        }
+
+        .skel-bubble--sm {
+            max-width: 60%
+        }
+
+        .skel-bubble--lg {
+            max-width: 80%
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, var(--glass) 25%, rgba(230, 165, 32, .08) 50%, var(--glass) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        .skel-bar {
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 8px
+        }
+
+        .skel-bar--w60 {
+            width: 60%
+        }
+
+        .skel-bar--w80 {
+            width: 80%
+        }
+
+        .skel-bar--w40 {
+            width: 40%
+        }
+
+        /* TIMER */
+
+        .timer {
+            font-family: var(--font-d);
+            font-size: 48px;
+            font-weight: 300;
+            color: var(--gold);
+            margin: 16px 0;
+            letter-spacing: 4px
+        }
+
+        /* OFFLINE BAR */
+
+        .offline-bar {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px;
+            background: rgba(248, 113, 113, .1);
+            border-bottom: 1px solid rgba(248, 113, 113, .2);
+            font-size: 12px;
+            color: #f87171;
+            flex-shrink: 0
+        }
+
+        .offline-bar--vis {
+            display: flex
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__orb ambient__o1"></div>
+        <div class="ambient__orb ambient__o2"></div>
+        <div class="ambient__grain"></div>
+    </div>
+    <div class="app">
+        <header class="hdr">
+            <button class="hdr__back" onclick="history.back()" aria-label="Go back"><svg viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg></button>
+            <h1 class="hdr__title">System States</h1>
+        </header>
+        <div class="offline-bar" id="offlineBar">📡 You're offline</div>
+        <div class="tabs" id="tabs">
+            <button class="tab tab--active" data-state="0">🛸 First Launch</button>
+            <button class="tab" data-state="1">🔑 No API Key</button>
+            <button class="tab" data-state="2">❌ API Error</button>
+            <button class="tab" data-state="3">📭 No History</button>
+            <button class="tab" data-state="4">⏳ Loading</button>
+            <button class="tab" data-state="5">📡 Offline</button>
+            <button class="tab" data-state="6">⏱ Rate Limited</button>
+        </div>
+
+        <!-- STATE 0: FIRST LAUNCH -->
+        <div class="state state--vis" data-view="0">
+            <div class="state-hex state-hex--spin state-hex--pulse"
+                style="background:rgba(0,255,136,.1);border:1px solid var(--hex-border)">
+                <span style="position:relative;z-index:1">✦</span>
+                <style>
+                    .state-hex--pulse[style*="hex-border"]::after {
+                        border-color: var(--accent)
+                    }
+                </style>
+            </div>
+            <div class="state-title" style="color:var(--accent)">Activate POTENTRIX</div>
+            <div class="state-desc">Infinite Intelligence. Limitless Potential. Your advanced AI assistant awaits.</div>
+            <button class="state-btn state-btn--accent" onclick="location.href='01-splash-onboarding.html'">Begin
+                Activation →</button>
+        </div>
+
+        <!-- STATE 1: NO API KEY -->
+        <div class="state" data-view="1">
+            <div class="state-hex" style="background:rgba(230,165,32,.1);border:1px solid var(--glass-border)">⚠️</div>
+            <div class="state-title" style="color:var(--gold-lt)">API Key Required</div>
+            <div class="state-desc">POTENTRIX needs a Groq API key to unleash its intelligence. It's free to get one!
+            </div>
+            <button class="state-btn state-btn--gold" onclick="location.href='04-settings.html'">Open Settings
+                →</button>
+            <a class="state-link" href="https://console.groq.com" target="_blank" rel="noopener">Get a free Groq API key
+                ↗</a>
+        </div>
+
+        <!-- STATE 2: API ERROR -->
+        <div class="state" data-view="2">
+            <div class="state-hex state-hex--shake"
+                style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3)">❌</div>
+            <div class="state-title" style="color:#f87171">Connection Lost</div>
+            <div class="state-desc">POTENTRIX couldn't reach the Groq servers. Check your API key or try again.</div>
+            <button class="state-btn state-btn--red" onclick="location.reload()">🔄 Retry Connection</button>
+            <button class="state-btn state-btn--outline" onclick="location.href='04-settings.html'">Check API
+                Key</button>
+        </div>
+
+        <!-- STATE 3: NO HISTORY -->
+        <div class="state" data-view="3">
+            <div class="state-hex state-hex--spin" style="background:var(--glass);border:1px solid var(--glass-border)">
+                📭</div>
+            <div class="state-title" style="color:var(--gold-lt)">No Conversations Yet</div>
+            <div class="state-desc">Start your first conversation with POTENTRIX and your chat history will appear
+                here.</div>
+            <button class="state-btn state-btn--gold" onclick="location.href='02-chat-interface.html'">Start Chatting
+                →</button>
+        </div>
+
+        <!-- STATE 4: LOADING -->
+        <div class="state" data-view="4">
+            <div style="margin-bottom:24px;font-family:var(--font-d);font-size:22px;color:var(--gold-lt)">Loading...
+            </div>
+            <div class="skeleton-list">
+                <div class="skel-msg">
+                    <div class="skel-avatar shimmer"></div>
+                    <div>
+                        <div class="skel-bubble skel-bubble--lg shimmer"></div>
+                        <div class="skel-bar skel-bar--w60 shimmer"></div>
+                    </div>
+                </div>
+                <div class="skel-msg skel-msg--right">
+                    <div class="skel-avatar shimmer" style="background:rgba(230,165,32,.15)"></div>
+                    <div>
+                        <div class="skel-bubble skel-bubble--sm shimmer"
+                            style="background:linear-gradient(90deg,rgba(230,165,32,.1) 25%,rgba(230,165,32,.15) 50%,rgba(230,165,32,.1) 75%);background-size:200% 100%">
+                        </div>
+                        <div class="skel-bar skel-bar--w40 shimmer"></div>
+                    </div>
+                </div>
+                <div class="skel-msg">
+                    <div class="skel-avatar shimmer"></div>
+                    <div>
+                        <div class="skel-bubble skel-bubble--lg shimmer"></div>
+                        <div class="skel-bar skel-bar--w80 shimmer"></div>
+                    </div>
+                </div>
+                <div class="skel-msg skel-msg--right">
+                    <div class="skel-avatar shimmer" style="background:rgba(230,165,32,.15)"></div>
+                    <div>
+                        <div class="skel-bubble skel-bubble--sm shimmer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATE 5: OFFLINE -->
+        <div class="state" data-view="5">
+            <div class="state-hex" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2)">📡
+            </div>
+            <div class="state-title" style="color:#f87171">You're Offline</div>
+            <div class="state-desc">POTENTRIX needs an internet connection to function. Check your
+                network and try again.</div>
+            <button class="state-btn state-btn--red" onclick="location.reload()">🔄 Try Again</button>
+        </div>
+
+        <!-- STATE 6: RATE LIMITED -->
+        <div class="state" data-view="6">
+            <div class="state-hex" style="background:rgba(230,165,32,.1);border:1px solid var(--glass-border)">⏱</div>
+            <div class="state-title" style="color:var(--gold)">Cooldown Active</div>
+            <div class="state-desc">Too many requests. POTENTRIX needs a moment to recharge.</div>
+            <div class="timer" id="timer">0:30</div>
+            <button class="state-btn state-btn--outline" id="retryTimer" disabled>Retry when timer ends</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            const tabs = document.getElementById('tabs');
+            const views = document.querySelectorAll('.state');
+            const offlineBar = document.getElementById('offlineBar');
+
+            tabs.addEventListener('click', e => {
+                const tab = e.target.closest('.tab'); if (!tab) return;
+                const idx = tab.dataset.state;
+                tabs.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
+                tab.classList.add('tab--active');
+                views.forEach(v => { v.classList.toggle('state--vis', v.dataset.view === idx); });
+                offlineBar.classList.toggle('offline-bar--vis', idx === '5');
+                if (idx === '6') startTimer();
+            });
+
+            // Timer
+            let timerInterval;
+            function startTimer() {
+                clearInterval(timerInterval);
+                let seconds = 30;
+                const timerEl = document.getElementById('timer');
+                const retryBtn = document.getElementById('retryTimer');
+                retryBtn.disabled = true; retryBtn.textContent = 'Retry when timer ends';
+                timerEl.textContent = '0:' + String(seconds).padStart(2, '0');
+                timerInterval = setInterval(() => {
+                    seconds--;
+                    timerEl.textContent = '0:' + String(seconds).padStart(2, '0');
+                    if (seconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerEl.textContent = '0:00';
+                        retryBtn.disabled = false; retryBtn.textContent = '✦ Ready — Retry Now';
+                        retryBtn.style.borderColor = 'var(--accent)'; retryBtn.style.color = 'var(--accent)';
+                    }
+                }, 1000);
+            }
+        })();
+    </script>
+</body>
+
+</html>

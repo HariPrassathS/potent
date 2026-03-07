@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="description" content="POTENTRIX — Voice-powered AI interaction">
+    <meta name="theme-color" content="#1A1108">
+    <title>POTENTRIX — Voice</title>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1108'/><text x='90' y='115' font-size='100' text-anchor='middle' fill='%23E6A520'>P</text></svg>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POTENTRIX — Voice">
+    <meta property="og:description" content="Voice-powered AI interaction">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* HEADER */
+
+        .hdr__btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: background .15s
+        }
+
+        .hdr__btn:active {
+            transform: scale(.96)
+        }
+
+        .hdr__btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-2);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round
+        }
+
+        .mode-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-2)
+        }
+
+        /* STATUS */
+
+        .status {
+            margin-top: 24px;
+            text-align: center
+        }
+
+        .status__title {
+            font-family: var(--font-d);
+            font-size: 28px;
+            font-weight: 300;
+            color: var(--gold-lt);
+            margin-bottom: 4px;
+            transition: all .3s
+        }
+
+        .status__sub {
+            font-size: 13px;
+            color: var(--text-3);
+            transition: all .3s
+        }
+
+        /* HEX VIZ */
+
+        .viz {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%
+        }
+
+        .rings {
+            position: relative;
+            width: 220px;
+            height: 220px
+        }
+
+        .ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid var(--hex-border);
+            opacity: .3;
+            transition: opacity .3s, border-color .3s
+        }
+
+        .ring--1 {
+            inset: 0;
+            animation: ring-pulse 3s ease-in-out infinite
+        }
+
+        .ring--2 {
+            inset: 20px;
+            animation: ring-pulse 3s ease-in-out infinite .5s
+        }
+
+        .ring--3 {
+            inset: 40px;
+            animation: ring-pulse 3s ease-in-out infinite 1s
+        }
+
+        @keyframes ring-pulse {
+
+            0%,
+            100% {
+                opacity: .2;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .5;
+                transform: scale(1.03)
+            }
+        }
+
+        .ring--listening {
+            border-color: var(--accent);
+            opacity: .6
+        }
+
+        .hex-center {
+            position: absolute;
+            inset: 55px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(16px)
+        }
+
+        .hex-center__letter {
+            font-family: var(--font-d);
+            font-size: 44px;
+            font-weight: 600;
+            color: var(--gold);
+            transition: color .3s
+        }
+
+        .hex-center--listening .hex-center__letter {
+            color: var(--accent)
+        }
+
+        /* WAVEFORM */
+
+        .wave {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            position: absolute;
+            bottom: 65px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 40px
+        }
+
+        .wave__bar {
+            width: 4px;
+            border-radius: 2px;
+            background: var(--accent);
+            opacity: .3;
+            transition: opacity .3s
+        }
+
+        .wave__bar--active {
+            opacity: 1;
+            animation: wave-bar 1s ease-in-out infinite
+        }
+
+        @keyframes wave-bar {
+
+            0%,
+            100% {
+                height: 8px
+            }
+
+            50% {
+                height: var(--h, 24px)
+            }
+        }
+
+        /* TRANSCRIPT */
+
+        .transcript {
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            padding: 0 24px;
+            min-height: 60px;
+            margin: 16px 0
+        }
+
+        .transcript__text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-2)
+        }
+
+        .transcript__text--ai {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 18px;
+            text-align: left
+        }
+
+        /* CONTROLS */
+
+        .controls {
+            width: 100%;
+            padding: 0 24px calc(var(--safe-b) + 24px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px
+        }
+
+        .mic-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 24px rgba(230, 165, 32, .3);
+            transition: transform .15s, box-shadow .15s
+        }
+
+        .mic-btn:active {
+            transform: scale(.95)
+        }
+
+        .mic-btn--listening {
+            background: linear-gradient(135deg, var(--accent-dk), #006B3A);
+            box-shadow: 0 4px 24px rgba(0, 255, 136, .3)
+        }
+
+        .mic-btn svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--surface);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round
+        }
+
+        .mic-btn--listening svg {
+            stroke: var(--accent)
+        }
+
+        .controls__row {
+            display: flex;
+            gap: 12px
+        }
+
+        .ctrl-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            font-size: 13px;
+            color: var(--text-2);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all .15s
+        }
+
+        .ctrl-btn:active {
+            transform: scale(.96)
+        }
+
+        .ctrl-btn:hover {
+            border-color: var(--glass-border-hover);
+            color: var(--text-1)
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__orb ambient__o1"></div>
+        <div class="ambient__orb ambient__o2"></div>
+        <div class="ambient__grain"></div>
+    </div>
+    <div class="app">
+        <header class="hdr">
+            <button class="hdr__btn" onclick="location.href='02-chat-interface.html'" aria-label="Close"><svg
+                    viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg></button>
+            <span class="hdr__title">Voice</span>
+            <span class="mode-badge" id="modeBadge">😊 Friendly</span>
+        </header>
+
+        <div class="status">
+            <div class="status__title" id="statusTitle">Tap to Speak</div>
+            <div class="status__sub" id="statusSub">POTENTRIX is ready</div>
+        </div>
+
+        <div class="viz">
+            <div class="rings" id="rings">
+                <div class="ring ring--1"></div>
+                <div class="ring ring--2"></div>
+                <div class="ring ring--3"></div>
+                <div class="hex-center" id="hexCenter"><span class="hex-center__letter">P</span></div>
+            </div>
+            <div class="wave" id="wave"></div>
+        </div>
+
+        <div class="transcript">
+            <div class="transcript__text" id="transcript"></div>
+        </div>
+
+        <div class="controls">
+            <button class="mic-btn" id="micBtn" aria-label="Toggle microphone">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" />
+                    <path d="M19 10v2a7 7 0 01-14 0v-2" />
+                    <line x1="12" y1="19" x2="12" y2="23" />
+                    <line x1="8" y1="23" x2="16" y2="23" />
+                </svg>
+            </button>
+            <div class="controls__row">
+                <button class="ctrl-btn" onclick="location.href='02-chat-interface.html'">⌨️ Keyboard</button>
+                <button class="ctrl-btn" id="langBtn">🇬🇧 English</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            const LANG_MAP = PTX.LANG_MAP;
+            const LANG_PROMPTS = PTX.LANG_PROMPTS;
+            const MODES = PTX.MODES;
+
+            let currentLang = PTX.get('lang', 'en');
+            let currentMode = PTX.get('mode', 'friendly');
+            let isListening = false, recognition = null;
+            const GROQ_KEY = PTX.API_KEY;
+
+            const $ = id => document.getElementById(id);
+            const micBtn = $('micBtn'), statusTitle = $('statusTitle'), statusSub = $('statusSub'),
+                transcript = $('transcript'), hexCenter = $('hexCenter'), rings = $('rings'), wave = $('wave'),
+                modeBadge = $('modeBadge'), langBtn = $('langBtn');
+
+            // Init
+            modeBadge.textContent = (MODES[currentMode]?.icon || '') + ' ' + (MODES[currentMode]?.name || currentMode);
+            langBtn.textContent = LANG_MAP[currentLang]?.label || '🇬🇧 English';
+
+            // Wave bars
+            for (let i = 0; i < 7; i++) { const b = document.createElement('div'); b.className = 'wave__bar'; b.style.setProperty('--h', (12 + Math.random() * 20) + 'px'); b.style.animationDelay = (i * 0.1) + 's'; wave.appendChild(b); }
+
+            // Language toggle
+            langBtn.addEventListener('click', () => {
+                const langs = ['en', 'ta', 'tanglish'];
+                const idx = (langs.indexOf(currentLang) + 1) % langs.length;
+                currentLang = langs[idx];
+                PTX.set('lang', currentLang);
+                langBtn.textContent = LANG_MAP[currentLang].label;
+            });
+
+            // Speech Recognition
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SR();
+                recognition.continuous = false; recognition.interimResults = true;
+                recognition.onresult = e => {
+                    let t = ''; for (let i = 0; i < e.results.length; i++)t += e.results[i][0].transcript;
+                    transcript.textContent = t;
+                };
+                recognition.onend = () => { if (isListening) { stopListening(); const t = transcript.textContent.trim(); if (t) processWithAPI(t); } };
+                recognition.onerror = () => stopListening();
+            }
+
+            micBtn.addEventListener('click', () => {
+                if (isListening) stopListening();
+                else startListening();
+            });
+
+            function startListening() {
+                if (!recognition) return;
+                isListening = true;
+                recognition.lang = LANG_MAP[currentLang]?.code || 'en-US';
+                recognition.start();
+                micBtn.classList.add('mic-btn--listening');
+                hexCenter.classList.add('hex-center--listening');
+                rings.querySelectorAll('.ring').forEach(r => r.classList.add('ring--listening'));
+                wave.querySelectorAll('.wave__bar').forEach(b => b.classList.add('wave__bar--active'));
+                statusTitle.textContent = 'Listening...'; statusTitle.style.color = '#00FF88';
+                statusSub.textContent = 'Speak now';
+                transcript.textContent = '';
+            }
+
+            function stopListening() {
+                isListening = false;
+                try { recognition.stop(); } catch (e) { }
+                micBtn.classList.remove('mic-btn--listening');
+                hexCenter.classList.remove('hex-center--listening');
+                rings.querySelectorAll('.ring').forEach(r => r.classList.remove('ring--listening'));
+                wave.querySelectorAll('.wave__bar').forEach(b => b.classList.remove('wave__bar--active'));
+                statusTitle.style.color = '';
+            }
+
+            async function processWithAPI(text) {
+                statusTitle.textContent = 'Processing...'; statusSub.textContent = 'POTENTRIX is thinking';
+
+                try {
+                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+                        body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: 'You are POTENTRIX. Be concise (2-3 sentences max). ' + LANG_PROMPTS[currentLang] }, { role: 'user', content: text }], temperature: 0.85, max_tokens: 256 })
+                    });
+                    const data = await res.json();
+                    const reply = data.choices?.[0]?.message?.content || 'No response.';
+                    transcript.innerHTML = '<div class="transcript__text--ai">' + PTX.escHtml(reply) + '</div>';
+                    // Speech synthesis
+                    if ('speechSynthesis' in window) {
+                        statusTitle.textContent = 'Speaking...'; statusSub.textContent = '';
+                        const utter = new SpeechSynthesisUtterance(reply);
+                        utter.lang = LANG_MAP[currentLang]?.code || 'en-US';
+                        utter.rate = parseFloat(PTX.get('speed', '100')) / 100;
+                        utter.onend = () => { statusTitle.textContent = 'Tap to Speak'; statusSub.textContent = 'POTENTRIX is ready'; };
+                        speechSynthesis.speak(utter);
+                    } else { statusTitle.textContent = 'Tap to Speak'; statusSub.textContent = 'POTENTRIX is ready'; }
+                } catch (e) {
+                    transcript.innerHTML = '<div class="transcript__text--ai">⚠️ Error: ' + PTX.escHtml(e.message) + '</div>';
+                    statusTitle.textContent = 'Tap to Speak'; statusSub.textContent = 'POTENTRIX is ready';
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>
