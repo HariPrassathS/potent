@@ -368,7 +368,6 @@
             let currentLang = PTX.get('lang', 'en');
             let currentMode = PTX.get('mode', 'friendly');
             let isListening = false, recognition = null;
-            const GROQ_KEY = PTX.API_KEY;
 
             const $ = id => document.getElementById(id);
             const micBtn = $('micBtn'), statusTitle = $('statusTitle'), statusSub = $('statusSub'),
@@ -437,8 +436,8 @@
                 statusTitle.textContent = 'Processing...'; statusSub.textContent = 'POTENTRIX is thinking';
 
                 try {
-                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+                    const res = await fetch('/api/chat', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: 'You are POTENTRIX. Be concise (2-3 sentences max). ' + LANG_PROMPTS[currentLang] }, { role: 'user', content: text }], temperature: 0.85, max_tokens: 256 })
                     });
                     const data = await res.json();
